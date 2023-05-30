@@ -15,7 +15,7 @@
 
 </head>
 
-<body style="background-color: black">
+<body style="background-color: black; color: white">
 
     @yield('content')
 </body>
