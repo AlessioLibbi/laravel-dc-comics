@@ -8,50 +8,86 @@
         </div>
 
         <h2>Aggiorna la comic: {{ $single->title }}</h2>
+        
 
         <form action="{{ route('comic.update', $single->id) }}" method="POST">
-            @method('PUT')
             @csrf
+            @method('PUT')
 
             <div class="mb-3">
                 <label for="title" class="form-label">Titolo</label>
-                <input type="text" class="form-control" id="title" name="title" value="{{ $single->title }}">
+                <input type="text"  id="title" name="title" class="form-control @error('title')
+                is-invalid @enderror"  value="{{ old('title', $single->title) }}">
+                @error('title')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                @enderror
             </div>
 
             <div class="mb-3">
-                <label for="type" class="form-label">Tipologia</label>
+                <label for="type" class="form-label @error('type') is-invalid @enderror">Tipologia</label>
                 <select id="type" name="type" class="form-select">
-                    <option></option>
-                    <option @selected($single->type === 'comic book') value="comic book">comic book</option>
-                    <option @selected($single->type === 'graphic novel') value="graphic novel">graphic novel</option>
                     
+                    <option @selected(old('type', $single->type === 'comic book')) value="comic book">comic book</option>
+                    <option @selected(old('type', $single->type === 'grapich novel')) value="graphic novel">graphic novel</option>
+                    @error('type')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </select>
             </div>
 
             <div class="mb-3">
                 <label for="thumb" class="form-label">Immagine</label>
-                <input type="text" class="form-control" id="thumb" name="thumb" value="{{ $single->thumb }}">
+                <input type="text" class="form-control @error('thumb') is-invalid @enderror" id="thumb" name="thumb"  value="{{ old('thumb', $single->thumb) }}">
+                @error('thumb')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                @enderror
             </div>
              <div class="mb-3">
                 <label for="series" class="form-label">Series</label>
-                <input type="text" class="form-control" id="series" name="series" value="{{ $single->series }}">
+                <input type="text" class="form-control @error('series') is-invalid @enderror" id="series" name="series" value="{{ old('series', $single->series) }}">>
+                 @error('series')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
             </div>
 
             <div class="mb-3">
                 <label for="price" class="form-label">Price</label>
-                <input type="text" class="form-control" id="price" name="price"
-                    value="{{ $single->price }}">
+                <input type="text" class="form-control @error('price') is-invalid @enderror" id="price" name="price"
+                     value="{{ old('price', $single->price) }}">
+                    @error('price')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror  
             </div>
 
             <div class="mb-3">
                 <label for="sale_date" class="form-label">Data</label>
-                <input type="text" class="form-control" id="sale_date" name="sale_date" value="{{ $single->sale_date }}">
+                <input type="text" class="form-control @error('sale_date') is-invalid @enderror" id="sale_date" name="sale_date" value="{{ old('sale_date', $single->sale_date) }}">
+                @error('sale_date')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
             </div>
 
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea class="form-control" name="description" id="description" rows="3">{{ $single->description }}</textarea>
-            </div>
+            <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea name="description" id="description" cols="30" rows="10" class="@error('description') is-invalid @enderror form-control">{{ old('description', $single->description) }}</textarea>
+                    @error('description')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
 
             <button class="btn btn-primary" type="submit">Invia</button>
         </form>

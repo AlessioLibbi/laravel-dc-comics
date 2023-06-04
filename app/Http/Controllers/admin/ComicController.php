@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ComicRequest;
+use App\Http\Requests\CreateRequest;
 use App\Models\Comic;
 use Illuminate\Http\Request;
 
@@ -35,17 +37,11 @@ class ComicController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
         $comic = new Comic();
-        $comic->title = $data['title'];
-        $comic->description = $data['description'];
-        $comic->thumb = $data['thumb'];
-        $comic->price = $data['price'];
-        $comic->series = $data['series'];
-        $comic->sale_date = $data['sale_date'];
-        $comic->type = $data['type'];
+        $comic->fill($data);
         $comic->save();
         return redirect()->route('comic.index');
     }
@@ -82,19 +78,12 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ComicRequest $request, $id)
     {
-        $data = $request->all();
+        $data = $request->validated();
         $single = Comic::findOrFail($id);
-        $single->title = $data['title'];
-        $single->description = $data['description'];
-        $single->thumb = $data['thumb'];
-        $single->price = $data['price'];
-        $single->series = $data['series'];
-        $single->sale_date = $data['sale_date'];
-        $single->type = $data['type'];
-        $single->save();
-        return redirect()->route('comic.index');
+        $single->update($data);
+        return redirect()->route('comic.index', $single->id);
     }
 
     /**
